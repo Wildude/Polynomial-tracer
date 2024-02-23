@@ -1,6 +1,7 @@
 /*
-* ~ Polynomial tracing algorithm
-* - The algorithm uses both differential and integral calculus to find the polynomial relationship between two variables.
+* Polynomial tracing algorithm
+* The algorithm uses both differential and integral calculus to find the polynomial relationship between two variables.
+* (INCOMPLETE)
 */
 #include <iostream>
 #include "arrays.hpp"
@@ -31,7 +32,7 @@ int main(){
             diy_dxi[i - 1] = slope<float>(0, d2y_dx2[i - 1], dx, d2y_dx2[i]);
         }
         if(all_zeros<float>(diy_dxi, sizei)){
-
+            // 
         }
         copy_array<float>(diy_dxi, &diy_dxi, sizei);
         display<float>(diy_dxi, sizei);
