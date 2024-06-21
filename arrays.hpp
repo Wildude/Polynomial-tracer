@@ -5,7 +5,7 @@ struct array{
     int size;
 };
 template <class T>
-bool all_zeros(T* list, int size){
+bool all_zeros(T* list, int size, int round = 3){
     for(int i = 0; i < size; i++){
         if(list[i])return false;
     }

@@ -4,40 +4,39 @@
 * (INCOMPLETE)
 */
 #include <iostream>
+#include <vector>
 #include "arrays.hpp"
 #include "polynomial.hpp"
 using namespace std;
 int main(){
     float x = 0;
-    float a[3] = {1, 2, 1};
+    float a[4] = {1, 3, 2, 1};
     float dx = 1;
     const int size = 100;
-    float *d1y_dx1 = new float [size];
-    for(int i = 1; i <= 100 ;i++){
-        float yo = polynomial<float>(x, a, 3);
-        float y = polynomial<float>(x + dx, a, 3);
-        d1y_dx1[i - 1] = slope<float>(x, yo, x + dx, y);
+    vector<float*>Diy_Dxi;
+    Diy_Dxi.push_back(new float[size]);
+    displayPolynomial<float>(a, 4);
+    for(int i = 1; i <= size ;i++){
+        float yo = polynomial<float>(x, a, 4);
+        float y = polynomial<float>(x + dx, a, 4);
+        Diy_Dxi.at(0)[i - 1] = yo;
         x += dx;
     }
-    int sizei = size - 1;
-    float *d2y_dx2 = new float[sizei];
-    for(int i = 1; i <= sizei; i++){
-        d2y_dx2[i - 1] = slope<float>(0, d1y_dx1[i - 1], dx, d1y_dx1[i]);
-    }
-    int count = 1;
-    while(!all_zeros<float>(d2y_dx2, sizei)){
-        sizei--;
-        float *diy_dxi = new float[sizei];
-        for(int i = 1; i <= sizei; i++){
-            diy_dxi[i - 1] = slope<float>(0, d2y_dx2[i - 1], dx, d2y_dx2[i]);
+    int i = 0;
+    while(!all_zeros<float>(Diy_Dxi.at(i), size - i)){
+        cout << " i = " << i << endl;
+        Diy_Dxi.push_back(new float[size - (i + 1)]);
+        for(int j = 1; j < size - (i + 1); j++){
+            Diy_Dxi.at(i + 1)[j - 1] = slope<float>(0, Diy_Dxi.at(i)[j - 1], dx, Diy_Dxi.at(i)[j]);
         }
-        if(all_zeros<float>(diy_dxi, sizei)){
-            // 
-        }
-        copy_array<float>(diy_dxi, &diy_dxi, sizei);
-        display<float>(diy_dxi, sizei);
-        count++;
+        i++;
     }
-    cout << " polynomial has upto " << count << " derivatives\n";
+    cout << " vector size = " << Diy_Dxi.size() << endl;
+    for(int i = 0; i < Diy_Dxi.size(); i++){
+        cout << " ==================================\n";
+        cout << " i: " << i << endl;
+        for(int j = 0; j < size - i; j++)
+        cout << " " << j + 1 << ". " << Diy_Dxi.at(i)[j] << endl;
+    }
     return 0;
 }
